@@ -8,7 +8,8 @@ const routes = (app) => {
 
     app.use(
         express.json(),
-        pacientes
+        pacientes,
+        medicos,
     );
 };
 
