@@ -18,7 +18,7 @@ class PacienteController {
             res.status(400).send({message: `${err.message} - erro ao buscar id do paciente`})
     }
     }
-    static cadastrarPacientes = async (req, res) => {
+    static cadastrarPaciente = async (req, res) => {
         try{
             let paciente = new pacientes(req.body);
             await paciente.save();
