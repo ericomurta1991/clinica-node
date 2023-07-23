@@ -12,4 +12,4 @@ const pacienteSchema = new mongoose.Schema(
 
 const pacientes = mongoose.model("pacientes", pacienteSchema);
 
-export default  pacientes;
+export default  pacientes

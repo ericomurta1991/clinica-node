@@ -1,7 +1,5 @@
 import express from "express";
-import consultas from "./pacientesRoutes"
-import medicos from "./medicosRoutes";
-import paciente from "./pacientesRoutes";
+import pacientes from "./pacientesRoutes.js";
 
 const routes = (app) => {
     app.route("/").get((req,res) => {
@@ -10,8 +8,6 @@ const routes = (app) => {
 
     app.use(
         express.json(),
-        consultas,
-        medicos,
         pacientes
     );
 };
