@@ -7,6 +7,9 @@ const medicoSchema = new mongoose.Schema(
         sobrenome: {type: String, required: true},
         especialidade: {type:String, required: true},
         crm: {type: Number, required: true}
+    },
+    {
+        versionKey: false
     }
 )
 
