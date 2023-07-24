@@ -23,9 +23,9 @@ class PlanoDeSaudeController{
 
     static cadastrarPlanoDeSaude = async(req, res) => {
         try{
-            let planoDeSaude = new planoDeSaude(req.body);
-            await planoDeSaude.save()
-            res.status(201).send(planoDeSaude.toJSON())
+            let plano = new planoDeSaude(req.body);
+            await plano.save()
+            res.status(201).send(plano.toJSON())
         } catch (err) {
             res.status(501).send({message: `${err.message} - erro ao cadastrar o plano de saude`})
         }
