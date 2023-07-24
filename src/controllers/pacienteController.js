@@ -5,7 +5,7 @@ class PacienteController {
     static listarPacientes = async(req, res) => {
         try{
             const pacientesResultado = await pacientes.find()
-            .populate("planoDeSaude", "nome");
+            .populate("nome");
             res.status(200).json(pacientesResultado);
         } catch (err) {
             res.status(500).json(err);
@@ -15,7 +15,6 @@ class PacienteController {
         try{
             const {id} = req.params;
             const pacientePorId = await pacientes.findById(id, req.body)
-            .populate("planoDeSaude", "nome");
             res.status(200).send(pacientePorId)
         } catch (err){
             res.status(400).send({message: `${err.message} - erro ao buscar id do paciente`})
