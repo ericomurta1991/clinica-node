@@ -8,6 +8,6 @@ const planoDeSaudeSchema = new mongoose.Schema(
     }
 )
 
-const planoDeSaude = mongoose.model("planoDeSaude", planoDeSaudeSchema);
+const planoDeSaude = mongoose.model("planodesaude", planoDeSaudeSchema);
 
 export default planoDeSaude;
