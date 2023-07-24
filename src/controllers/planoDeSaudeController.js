@@ -1,4 +1,4 @@
-import planoDeSaude from "../models/PlanoDeSaude";
+import planoDeSaude from "../models/PlanoDeSaude.js";
 
 class PlanoDeSaudeController{
     
