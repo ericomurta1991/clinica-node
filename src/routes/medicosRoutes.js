@@ -1,5 +1,5 @@
 import express from "express";
-import MedicoController from "../controllers/medicoController";
+import MedicoController from "../controllers/medicoController.js";
 
 const router = express.Router();
 
@@ -8,6 +8,6 @@ router
     .get("/medicos/:id", MedicoController.listarMedicoPorId)
     .post("/medicos", MedicoController.cadastrarMedico)
     .put("/medicos/:id", MedicoController.atualizarMedico)
-    .delete("/delete/:id", MedicoController.excluirMedico)
+    .delete("/medicos/:id", MedicoController.excluirMedico)
 
 export default router;    
