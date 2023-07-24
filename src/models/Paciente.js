@@ -6,7 +6,7 @@ const pacienteSchema = new mongoose.Schema(
         nome: {type: String, required: true},
         sobrenome: {type: String, required: true},
         nacionalidade: {type: String, required: true},
-        planoDeSaude: {type: mongoose.Schema.Types.ObjectId, ref: "planoDeSaude", required: true}
+        planoDeSaude: {type: mongoose.Schema.Types.ObjectId, ref: "planoDeSaude"}
     }
 )
 
