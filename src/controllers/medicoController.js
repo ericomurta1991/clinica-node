@@ -14,7 +14,7 @@ class MedicoController{
     static listarMedicoPorId = async(req, res) => {
         try{
             const {id} = req.params;
-            const medicoPorId = await medicos.findById;
+            const medicoPorId = await medicos.findById(id, req.body);
             res.status(200).send(medicoPorId); 
         }catch(err){
             res.status(400).send({message: `${err.message} - erro ao buscar o id do medico`})
@@ -44,7 +44,7 @@ class MedicoController{
         try{
             const {id} = req.params;
             await medicos.findByIdAndDelete(id);
-            res.status(200).send({message: err.message});
+            res.status(200).send({message: "Medico removido com sucesso"});
         }catch(err){
             res.status(500).send({message: err.message})
         }
