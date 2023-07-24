@@ -5,8 +5,7 @@ const pacienteSchema = new mongoose.Schema(
         id: {type: String},
         nome: {type: String, required: true},
         sobrenome: {type: String, required: true},
-        nacionalidade: {type: String, required: true},
-        planoDeSaude: {type: mongoose.Schema.Types.ObjectId, ref: "planodesaude", required: true}
+        nacionalidade: {type: String, required: true}
     },
     {
         versionKey: false
