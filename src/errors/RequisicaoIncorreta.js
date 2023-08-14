@@ -1,4 +1,4 @@
-import ErroBase from "./ErroBase";
+import ErroBase from "./ErroBase.js";
 
 class RequisicaoIncorreta extends ErroBase{
     constructor(mensagem= "um ou mais dados fornecidos estao incorretos"){

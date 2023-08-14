@@ -1,4 +1,4 @@
-import ErroBase from "./ErroBase";
+import ErroBase from "./ErroBase.js";
 
 class NaoEncontrado extends ErroBase{
     constructor(mensagem = "Pagina Nao Encontrada"){
