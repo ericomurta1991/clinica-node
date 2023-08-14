@@ -1,4 +1,4 @@
-import consultas from "../models/Consulta.js"
+import {consultas} from "../models/index.js"
 import NaoEncontrado from "../errors/NaoEncontrado.js"
 
 class ConsultaController{

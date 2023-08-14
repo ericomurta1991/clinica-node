@@ -1,4 +1,4 @@
-import medicos from "../models/Medico.js";
+import {medicos} from "../models/index.js";
 import NaoEncontrado from "../errors/NaoEncontrado.js";
 
 
