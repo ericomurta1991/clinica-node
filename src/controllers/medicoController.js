@@ -1,9 +1,10 @@
 import medicos from "../models/Medico.js";
+import NaoEncontrado from "../errors/NaoEncontrado.js";
 
 
 class MedicoController{
     
-    static listarMedicos = async(req, res)=> {
+    static listarMedicos = async(req, res, next)=> {
         try{
             const medicosResultado = await medicos.find();
             res.status(200).json(medicosResultado);
@@ -11,43 +12,56 @@ class MedicoController{
             res.status(500).json({message: "Erro interno de servidor "});
         }
     }
-    static listarMedicoPorId = async(req, res) => {
+    static listarMedicoPorId = async(req, res, next) => {
         try{
             const {id} = req.params;
             const medicoPorId = await medicos.findById(id, req.body);
-            res.status(200).send(medicoPorId); 
+            if(medicoPorId !== null){
+                res.status(200).send(medicoPorId); 
+            }else{
+                next( new NaoEncontrado("id do medico nao localizado"));
+            }  
         }catch(err){
-            res.status(400).send({message: `${err.message} - erro ao buscar o id do medico`})
+            next(err)
         }
     }
-    static cadastrarMedico = async(req, res) => {
+    static cadastrarMedico = async(req, res, next) => {
         try{
             let medico = new medicos(req.body);
             await medico.save();
             res.status(200).send(medico.toJSON())
         }catch(err){
-            res.status(501).send({message: `${err.message} - erro ao cadastrar medico`})
+            next(err);
         }
     }
-    static atualizarMedico = async(req, res)=> {
+    static atualizarMedico = async(req, res, next)=> {
         try{
             const {id} = req.params;
             const novoMedico = await medicos.findByIdAndUpdate(id, req.body,{
                 new: true
             });
-            res.status(200).json(novoMedico);
+
+            if(novoMedico !== null){
+                res.status(200).json(novoMedico);
+            }else{
+                next(new NaoEncontrado("Id do Medico nao localizado"))
+            }
         }catch(err){
-            res.status(500).json({err: err.message});
+            next(err)
         }
     }
     static excluirMedico = async(req, res) => {
         try{
             const {id} = req.params;
             await medicos.findByIdAndDelete(id);
-            res.status(200).send({message: "Medico removido com sucesso"});
+
+            if(id !== null){
+                res.status(200).send({message: "Medico removido com sucesso"});
+            }else{
+                next(new NaoEncontrado("Id do medico nao encontrado."))
+            } 
         }catch(err){
-            res.status(500).send({message: err.message})
-        }
+            next(err);        }
     }
 }
     

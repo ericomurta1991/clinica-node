@@ -1,8 +1,9 @@
 import planoDeSaude from "../models/PlanoDeSaude.js";
+import NaoEncontrado from "../errors/NaoEncontrado.js"
 
 class PlanoDeSaudeController{
     
-    static listarPlanosDeSaude = async(req, res) => {
+    static listarPlanosDeSaude = async(req, res, next) => {
         try {
             const planosDeSaudeResultado = await planoDeSaude.find()
             res.status(200).json(planosDeSaudeResultado);
@@ -11,45 +12,57 @@ class PlanoDeSaudeController{
         }      
     }
 
-    static listarPlanoDeSaudePorId = async(req, res) => {
+    static listarPlanoDeSaudePorId = async(req, res, next) => {
         try{
         const {id} = req.params;
         const planodeDeSaudePorId = await planoDeSaude.findById(id);
-        res.status(200).send(planodeDeSaudePorId)
+        if(planodeDeSaudePorId !== null){
+            res.status(200).send(planodeDeSaudePorId)
+        }else{
+            next(new NaoEncontrado("Id do plano de Saude Nao encontrado"))
+        }
         }catch(err){
-        res.status(400).send({message: `${err.message} - erro ao buscar o plano de saude por id`})
+            next(err);
         }
     }
 
-    static cadastrarPlanoDeSaude = async(req, res) => {
+    static cadastrarPlanoDeSaude = async(req, res, next) => {
         try{
             let plano = new planoDeSaude(req.body);
             await plano.save()
             res.status(201).send(plano.toJSON())
         } catch (err) {
-            res.status(501).send({message: `${err.message} - erro ao cadastrar o plano de saude`})
+            next(err);
         }
     }
 
-    static atualizarPlanoDeSaude = async(req, res) => {
+    static atualizarPlanoDeSaude = async(req, res, next) => {
         try{
             const {id} = req.params
             const novoPlanoDeSaude = await planoDeSaude.findByIdAndUpdate(id, req.body, {
                 new: true
             });
-            res.status(200).json(novoPlanoDeSaude)
+            if(novoPlanoDeSaude !== null){
+                res.status(200).json(novoPlanoDeSaude)
+            }else{
+                next(NaoEncontrado("Id do Plano De Saude nao localizado."))
+            }  
         } catch (err){
-            res.status(500).json({err: err.message});
+            next(err)
         }
     };
 
-    static excluirPlanoDeSaude = async (req, res) => {
+    static excluirPlanoDeSaude = async (req, res, next) => {
         try{
             const {id} = req.params
             await planoDeSaude.findByIdAndDelete(id);
-            res.status(200).send({message: "Livro excluido com sucesso"});
+            if(id !== null){
+                res.status(200).send({message: "Livro excluido com sucesso"});
+            }else{
+                next(new NaoEncontrado("Id do plano de saude nao localizado."))
+            }
         } catch(err){
-            res.status(500).send({message: err.message});
+            next(err);
         }
     }
 

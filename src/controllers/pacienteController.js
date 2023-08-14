@@ -1,3 +1,4 @@
+import NaoEncontrado from "../errors/NaoEncontrado.js";
 import pacientes from "../models/Paciente.js";
 
 class PacienteController {
@@ -11,22 +12,26 @@ class PacienteController {
             res.status(500).json(err);
         }
     }
-    static listarPacientePorId = async(req, res) => {
+    static listarPacientePorId = async(req, res, next) => {
         try{
             const {id} = req.params;
             const pacientePorId = await pacientes.findById(id, req.body)
-            res.status(200).send(pacientePorId)
+            if(pacientePorId !== null){
+                res.status(200).send(pacientePorId)
+            }else{
+                next(new NaoEncontrado("Id do Paciente nao localizado."))
+            }
         } catch (err){
-            res.status(400).send({message: `${err.message} - erro ao buscar id do paciente`})
+            next(err);
     }
     }
-    static cadastrarPaciente = async (req, res) => {
+    static cadastrarPaciente = async (req, res, next) => {
         try{
             let paciente = new pacientes(req.body);
             await paciente.save();
             res.status(201).send(paciente.toJSON());
         } catch(err){
-            res.status(501).send({message: `${err.message} - erro ao cadastrar paciente`})
+            next(err);
         }
     }
     static atualizarPaciente = async (req, res) => {
@@ -35,18 +40,27 @@ class PacienteController {
             const novoPaciente = await pacientes.findByIdAndUpdate(id, req.body,{
                 new: true
             });
-            res.status(200).json(novoPaciente);
+            if(novoPaciente !== null){
+                res.status(200).json(novoPaciente);
+            }else{
+                next(new NaoEncontrado("Id do Paciente nao localizado"))
+            }
         } catch(err){
-            res.status(500).json({err: err.message});
+            next(err);
         }
     }
-    static excluirPaciente = async(req, res) => {
+    static excluirPaciente = async(req, res, next) => {
         try {
             const {id} = req.params;
             await pacientes.findByIdAndDelete(id);
-            res.status(200).send({message: "Paciente removido com sucesso"});
+
+            if(id !== null){
+                res.status(200).send({message: "Paciente removido com sucesso"});
+            }else{
+                next(new NaoEncontrado("Id do paciente nao localizado"));
+            }
         } catch (err) {
-            res.status(500).send({message: err.message});
+            next(err);
         }
     }
 
